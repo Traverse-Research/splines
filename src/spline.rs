@@ -293,7 +293,7 @@ impl<T, V> Spline<T, V> {
   }
 
   /// Mutably get a key at a given index.
-  pub fn get_mut(&mut self, index: usize) -> Option<KeyMut<T, V>> {
+  pub fn get_mut(&mut self, index: usize) -> Option<KeyMut<'_, T, V>> {
     self.0.get_mut(index).map(|key| KeyMut {
       value: &mut key.value,
       interpolation: &mut key.interpolation,

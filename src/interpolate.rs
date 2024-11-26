@@ -232,6 +232,6 @@ macro_rules! impl_InterpolateT {
   };
 }
 
-impl_Interpolate!(f32, f32, std::f32::consts::PI);
-impl_Interpolate!(f64, f64, std::f64::consts::PI);
-impl_InterpolateT!(f32, f64, std::f32::consts::PI);
+impl_Interpolate!(f32, f32, f32::consts::PI);
+impl_Interpolate!(f64, f64, f64::consts::PI);
+impl_InterpolateT!(f32, f64, f32::consts::PI);

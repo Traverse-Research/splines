@@ -11,11 +11,7 @@ use crate::{Key, Spline};
 /// Iterator over spline keys.
 ///
 /// This iterator type is guaranteed to iterate over sorted keys.
-pub struct Iter<'a, T, V>
-where
-  T: 'a,
-  V: 'a,
-{
+pub struct Iter<'a, T, V> {
   spline: &'a Spline<T, V>,
   i: usize,
 }
