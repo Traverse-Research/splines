@@ -31,30 +31,23 @@ impl Interpolate<f32> for Quat {
   }
 
   fn cubic_hermite(t: f32, x: (f32, Self), a: (f32, Self), b: (f32, Self), y: (f32, Self)) -> Self {
-    // Calculate time parameters
-    let two_t = t * 2.0;
-    let three_t = t * 3.0;
+    // sampler stuff
+    let two_t = t * 2.;
+    let three_t = t * 3.;
     let t2 = t * t;
     let t3 = t2 * t;
     let two_t3 = t2 * two_t;
     let two_t2 = t * two_t;
     let three_t2 = t * three_t;
 
-    // Calculate tangents using slerp differences
-    let m0 = b.1.slerp(x.1, -1.0).normalize() * ((b.0 - a.0) / (b.0 - x.0));
-    let m1 = y.1.slerp(a.1, -1.0).normalize() * ((b.0 - a.0) / (y.0 - a.0));
+    // tangents
+    let m0 = (b.1 - x.1) / (b.0 - x.0) * (b.0 - a.0);
+    let m1 = (y.1 - a.1) / (y.0 - a.0) * (b.0 - a.0);
 
-    // Combine using quaternion multiplication and slerp
-    let h00 = two_t3 - three_t2 + 1.0;
-    let h10 = t3 - two_t2 + t;
-    let h01 = three_t2 - two_t3;
-    let h11 = t3 - t2;
-
-    // Blend the quaternions using slerp
-    let q1 = a.1.slerp(b.1, h01);
-    let q2 = m0.slerp(m1, h11);
-    
-    q1.slerp(q2, h00 + h10)
+    a.1 * (two_t3 - three_t2 + 1.)
+      + m0 * (t3 - two_t2 + t)
+      + b.1 * (three_t2 - two_t3)
+      + m1 * (t3 - t2)
   }
 
   fn quadratic_bezier(t: f32, a: Self, u: Self, b: Self) -> Self {
@@ -101,30 +94,7 @@ impl Interpolate<f64> for DQuat {
   }
 
   fn cubic_hermite(t: f64, x: (f64, Self), a: (f64, Self), b: (f64, Self), y: (f64, Self)) -> Self {
-      // Calculate time parameters
-      let two_t = t * 2.0;
-      let three_t = t * 3.0;
-      let t2 = t * t;
-      let t3 = t2 * t;
-      let two_t3 = t2 * two_t;
-      let two_t2 = t * two_t;
-      let three_t2 = t * three_t;
-  
-      // Calculate tangents using slerp differences
-      let m0 = b.1.slerp(x.1, -1.0).normalize() * ((b.0 - a.0) / (b.0 - x.0));
-      let m1 = y.1.slerp(a.1, -1.0).normalize() * ((b.0 - a.0) / (y.0 - a.0));
-  
-      // Combine using quaternion multiplication and slerp
-      let h00 = two_t3 - three_t2 + 1.0;
-      let h10 = t3 - two_t2 + t;
-      let h01 = three_t2 - two_t3;
-      let h11 = t3 - t2;
-  
-      // Blend the quaternions using slerp
-      let q1 = a.1.slerp(b.1, h01);
-      let q2 = m0.slerp(m1, h11);
-      
-      q1.slerp(q2, h00 + h10)
+      unimplemented!("Need to figure this out for quaternions")
     }
 
   fn quadratic_bezier(t: f64, a: Self, u: Self, b: Self) -> Self {
